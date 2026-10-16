@@ -1,23 +1,25 @@
 name: Build Android APK
 
-on: [push]
+on:
+  workflow_dispatch:
+  push:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Build with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
+        uses: ArtemSBulgakov/buildozer-action@v1.2.0
         id: buildozer
         with:
-          command: android debug
-          filename: bin/*.apk
+          command: buildozer android debug
+          subfolder: .
 
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: package
-          path: ${{ steps.buildozer.outputs.filename }}
+          name: python-game-apk
+          path: bin/*.apk
